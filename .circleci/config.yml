@@ -5,6 +5,7 @@ dependencies:
     - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
     - rm google-chrome.deb
 
-#test:
-#  override:
-#- google-chrome --version
+test:
+  override:
+    - mkdir -p $CIRCLE_TEST_REPORTS/cucumber
+    - bundle exec rake features @CUCUMBER_TAGS=@login --format junit --out $CIRCLE_TEST_REPORTS/cucumber/junit.xml
