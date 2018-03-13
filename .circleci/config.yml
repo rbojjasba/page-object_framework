@@ -7,5 +7,6 @@ dependencies:
 
 test:
   override:
+    - google-chrome --version
     - mkdir -p $CIRCLE_TEST_REPORTS/cucumber
     - bundle exec rake features @CUCUMBER_TAGS=@login --format junit --out $CIRCLE_TEST_REPORTS/cucumber/junit.xml
