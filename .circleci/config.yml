@@ -5,6 +5,6 @@ dependencies:
     - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
     - rm google-chrome.deb
 
-test:
-  override:
-- google-chrome --version
+#test:
+#  override:
+#- google-chrome --version
