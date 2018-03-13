@@ -25,6 +25,14 @@ jobs:
           - v1-dependencies-{{ checksum "Gemfile.lock" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
+    
+    # Install latest chrome
+    dependencies:
+     override:
+     - curl -L -o google-chrome.deb https://s3.amazonaws.com/circle-downloads/google-chrome-stable_current_amd64_47.0.2526.73-1.deb
+     - sudo dpkg -i google-chrome.deb
+     - sudo sed -i 's|HERE/chrome\"|HERE/chrome\" --disable-setuid-sandbox|g' /opt/google/chrome/google-chrome
+     - rm google-chrome.deb
 
       - run:
           name: install dependencies
@@ -37,8 +45,8 @@ jobs:
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
         
       # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+     # - run: bundle exec rake db:create
+    #  - run: bundle exec rake db:schema:load
 
       # run tests!
       - run:
@@ -47,11 +55,7 @@ jobs:
             mkdir /tmp/test-results
             TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
             
-            bundle exec rspec --format progress \
-                            --format RspecJunitFormatter \
-                            --out /tmp/test-results/rspec.xml \
-                            --format progress \
-                            $TEST_FILES
+           rake features CUCUMBER_TAGS=@login
 
       # collect reports
       - store_test_results:
