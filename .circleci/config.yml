@@ -46,7 +46,7 @@ jobs:
           name: Run test and generate json results
           command: |
             mkdir -p ./output
-            rake features @CUCUMBER_TAGS=@login 
+            rake features CUCUMBER_TAGS=@login 
           when: always
       - store_test_results:
           path: ./output
